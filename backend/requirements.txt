@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pandas
+numpy
+scipy
+sdv
+fpdf2
+scikit-learn
+python-dotenv
+pydantic
+pydantic-settings
