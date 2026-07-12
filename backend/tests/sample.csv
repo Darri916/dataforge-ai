@@ -1,0 +1,11 @@
+age,income,gender,purchased
+25,40000,male,no
+32,55000,female,yes
+45,72000,male,yes
+28,48000,female,no
+36,63000,male,yes
+52,91000,female,yes
+29,44000,male,no
+41,68000,female,yes
+38,59000,male,no
+47,83000,female,yes

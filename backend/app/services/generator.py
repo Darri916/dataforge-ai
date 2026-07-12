@@ -39,7 +39,10 @@ def generate_synthetic_data(
     SynthesizerClass = SYNTHESIZER_MAP[synthesizer_name]
 
     logger.info(f"Fitting {synthesizer_name} on {df.shape[0]} rows...")
-    synthesizer = SynthesizerClass(metadata, cuda=False)
+    if synthesizer_name == "gaussian_copula":
+        synthesizer = SynthesizerClass(metadata)
+    else:
+        synthesizer = SynthesizerClass(metadata, cuda=False)
     synthesizer.fit(df)
 
     logger.info(f"Sampling {num_rows} synthetic rows...")
