@@ -69,8 +69,11 @@ export default function GeneratePage({ fileId, profile, onSuccess }) {
       {/* Row count */}
       <div className="mb-8">
         <label className="text-sm text-gray-400 uppercase tracking-wide font-medium mb-3 block">
-          Number of Rows — <span className="text-white">{numRows}</span>
-        </label>
+  Rows to Generate — <span className="text-white">{numRows}</span>
+  <span className="ml-2 normal-case text-gray-100 font-normal bold">
+    (new synthetic rows learned from your {profile?.rows?.toLocaleString()} real rows)
+  </span>
+</label>
         <input
           type="range"
           min={50} max={5000} step={50}
