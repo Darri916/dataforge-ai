@@ -71,11 +71,11 @@ def recommend_synthesizer(df: pd.DataFrame) -> tuple[str, str]:
     numerical_ratio = len(numerical_cols) / n_cols if n_cols > 0 else 0
 
     if n_rows < 1000 and numerical_ratio > 0.7:
-        return "gaussian_copula", "Small dataset with mostly numerical columns — Gaussian Copula is fast and preserves correlations well."
+        return "gaussian_copula", "Small dataset with mostly numerical columns - Gaussian Copula is fast and preserves correlations well."
     elif n_rows >= 5000:
-        return "tvae", "Large dataset detected — TVAE handles complex distributions better at scale."
+        return "tvae", "Large dataset detected - TVAE handles complex distributions better at scale."
     else:
-        return "ctgan", "Mixed data types or medium-sized dataset — CTGAN is the most versatile choice."
+        return "ctgan", "Mixed data types or medium-sized dataset - CTGAN is the most versatile choice."
 
 def profile_dataframe(df: pd.DataFrame) -> dict:
     """Full profile: types, health score, recommendation."""

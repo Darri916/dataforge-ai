@@ -9,7 +9,7 @@ logger = get_logger(__name__)
 class DataForgeReport(FPDF):
     def header(self):
         self.set_font("Helvetica", "B", 14)
-        self.cell(0, 10, "DataForge AI — Synthetic Data Report", align="C", new_x="LMARGIN", new_y="NEXT")
+        self.cell(0, 10, "DataForge AI - Synthetic Data Report", align="C", new_x="LMARGIN", new_y="NEXT")
         self.ln(2)
 
     def footer(self):
