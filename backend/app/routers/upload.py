@@ -1,6 +1,5 @@
 import uuid
 import os
-import shutil
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from app.config import settings
 from app.utils.file_utils import validate_file, check_file_size, load_csv
@@ -15,15 +14,14 @@ router = APIRouter()
 async def upload_file(file: UploadFile = File(...)):
     validate_file(file)
 
+    contents = await file.read()
+    check_file_size(len(contents))
+
     file_id = str(uuid.uuid4())
     save_path = os.path.join(settings.UPLOAD_DIR, f"{file_id}.csv")
 
-    # Save uploaded file to disk
-    with open(save_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    file_size = os.path.getsize(save_path)
-    check_file_size(file_size)
+    with open(save_path, "wb") as f:
+        f.write(contents)
 
     df = load_csv(save_path)
     profile = profile_dataframe(df)

@@ -11,7 +11,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(0)
   const [fileId, setFileId] = useState(null)
   const [profile, setProfile] = useState(null)
-  const [syntheticFileId, setSyntheticFileId] = useState(null)
   const [quality, setQuality] = useState(null)
   const [privacy, setPrivacy] = useState(null)
 
@@ -54,7 +53,7 @@ export default function App() {
           <GeneratePage
             fileId={fileId}
             profile={profile}
-            onSuccess={(data) => { setSyntheticFileId(data.synthetic_file_id); goTo(2) }}
+            onSuccess={() => goTo(2)}
           />
         )}
         {activeTab === 2 && (

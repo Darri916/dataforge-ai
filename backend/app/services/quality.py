@@ -52,7 +52,8 @@ def evaluate_quality(real_df: pd.DataFrame, synthetic_df: pd.DataFrame) -> dict:
     if len(numerical_cols) >= 2:
         real_corr = real_df[numerical_cols].corr().values
         syn_corr = synthetic_df[numerical_cols].corr().values
-        corr_similarity = round(float(np.corrcoef(real_corr.flatten(), syn_corr.flatten())[0, 1]), 4)
+        val = float(np.corrcoef(real_corr.flatten(), syn_corr.flatten())[0, 1])
+        corr_similarity = round(val if not np.isnan(val) else 1.0, 4)
     else:
         corr_similarity = 1.0
 

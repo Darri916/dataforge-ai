@@ -49,9 +49,13 @@ def compute_health_score(df: pd.DataFrame) -> tuple[float, dict]:
         imbalance_scores = []
         for col in categorical_cols:
             freqs = df[col].value_counts(normalize=True)
-            # Perfectly balanced = 1/n for each class; penalise deviation
-            imbalance = 1 - (freqs.max() - freqs.min())
-            imbalance_scores.append(imbalance)
+            n = len(freqs)
+            if n <= 1:
+                imbalance_scores.append(0.0)
+            else:
+                entropy = -np.sum(freqs * np.log(freqs + 1e-10))
+                max_entropy = np.log(n)
+                imbalance_scores.append(entropy / max_entropy)
         scores["imbalance"] = round(np.mean(imbalance_scores) * 25, 2)
     else:
         scores["imbalance"] = 25.0

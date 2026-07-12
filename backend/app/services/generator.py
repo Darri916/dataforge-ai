@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sdv.single_table import GaussianCopulaSynthesizer, CTGANSynthesizer, TVAESynthesizer
 from sdv.metadata import SingleTableMetadata
@@ -28,6 +29,8 @@ def generate_synthetic_data(
     Fit a synthesizer on real data and sample synthetic rows.
     Returns (synthetic_df, synthesizer_used).
     """
+    np.random.seed(settings.RANDOM_SEED)
+
     if synthesizer_name == "auto":
         synthesizer_name, _ = recommend_synthesizer(df)
         logger.info(f"Auto mode selected: {synthesizer_name}")

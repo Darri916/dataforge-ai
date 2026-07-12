@@ -84,7 +84,7 @@ export default function QualityPage({ fileId, quality, onLoad, onNext }) {
       .then(res => onLoad(res.data))
       .catch(e => setError(e.response?.data?.detail || "Failed to load quality metrics."))
       .finally(() => setLoading(false))
-  }, [fileId])
+  }, [fileId, onLoad])
 
   if (!fileId) return <div className="text-center py-20 text-gray-500">Please upload and generate data first.</div>
   if (loading) return <div className="text-center py-20 text-indigo-400 animate-pulse">Loading quality metrics...</div>

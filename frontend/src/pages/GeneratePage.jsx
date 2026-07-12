@@ -22,7 +22,7 @@ export default function GeneratePage({ fileId, profile, onSuccess }) {
     try {
       const res = await generateSynthetic(fileId, synthesizer, numRows)
       setResult(res.data)
-      setTimeout(() => onSuccess(res.data), 1200)
+      onSuccess(res.data)
     } catch (e) {
       setError(e.response?.data?.detail || "Generation failed.")
     } finally {
@@ -105,7 +105,7 @@ export default function GeneratePage({ fileId, profile, onSuccess }) {
             <p className="text-gray-400 text-sm mt-1">
               {result.rows_generated} rows generated using <span className="text-indigo-400">{result.synthesizer_used.replace("_", " ")}</span>
             </p>
-            <p className="text-gray-500 text-xs mt-1">Redirecting to Quality Report...</p>
+            <p className="text-gray-500 text-xs mt-1">Moving to Quality Report...</p>
           </div>
         </div>
       )}

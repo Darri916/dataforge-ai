@@ -8,7 +8,10 @@ logger = get_logger(__name__)
 ALLOWED_EXTENSIONS = {".csv"}
 
 def validate_file(file: UploadFile) -> None:
-    ext = "." + file.filename.split(".")[-1].lower()
+    name = file.filename or ""
+    if "." not in name:
+        raise HTTPException(status_code=400, detail="Only CSV files are supported.")
+    ext = "." + name.rsplit(".", 1)[-1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(status_code=400, detail="Only CSV files are supported.")
 
@@ -27,6 +30,8 @@ def load_csv(filepath: str) -> pd.DataFrame:
             raise HTTPException(status_code=400, detail="Uploaded CSV is empty.")
         logger.info(f"Loaded CSV: {filepath} — {df.shape[0]} rows, {df.shape[1]} cols")
         return df
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.error(f"Failed to load CSV: {e}")
         raise HTTPException(status_code=400, detail=f"Could not read CSV: {str(e)}")
+       

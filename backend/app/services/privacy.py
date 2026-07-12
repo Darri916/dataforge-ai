@@ -15,9 +15,10 @@ def encode_dataframe(df: pd.DataFrame) -> np.ndarray:
     return df_encoded.fillna(0).values.astype(float)
 
 def detect_duplicates(real_df: pd.DataFrame, synthetic_df: pd.DataFrame) -> float:
-    """Proportion of synthetic rows that are exact duplicates of real rows."""
-    real_set = set(map(tuple, real_df.values))
-    duplicates = sum(1 for row in synthetic_df.values if tuple(row) in real_set)
+    real_filled = real_df.fillna("__NaN__")
+    syn_filled = synthetic_df.fillna("__NaN__")
+    real_set = set(map(tuple, real_filled.values))
+    duplicates = sum(1 for row in syn_filled.values if tuple(row) in real_set)
     rate = round(duplicates / len(synthetic_df), 4)
     logger.info(f"Duplicate rate: {rate}")
     return rate
@@ -36,7 +37,8 @@ def nearest_neighbor_distance(real_df: pd.DataFrame, synthetic_df: pd.DataFrame)
     avg_distance = float(np.mean(distances))
 
     # Normalize by the max possible distance in this space
-    max_possible = float(np.sqrt(real_encoded.shape[1]) * np.max(np.abs(real_encoded)))
+    col_ranges = real_encoded.max(axis=0) - real_encoded.min(axis=0)
+    max_possible = float(np.sqrt(np.sum(col_ranges ** 2)))
     normalized = round(min(avg_distance / max_possible, 1.0), 4) if max_possible > 0 else 0.0
     logger.info(f"Nearest neighbor distance (normalized): {normalized}")
     return normalized
