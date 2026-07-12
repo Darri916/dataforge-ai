@@ -1,122 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react"
+import UploadPage from "./pages/UploadPage"
+import GeneratePage from "./pages/GeneratePage"
+import QualityPage from "./pages/QualityPage"
+import PrivacyPage from "./pages/PrivacyPage"
+import ExportPage from "./pages/ExportPage"
 
-function App() {
-  const [count, setCount] = useState(0)
+const TABS = ["Upload", "Generate", "Quality", "Privacy", "Export"]
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState(0)
+  const [fileId, setFileId] = useState(null)
+  const [profile, setProfile] = useState(null)
+  const [syntheticFileId, setSyntheticFileId] = useState(null)
+  const [quality, setQuality] = useState(null)
+  const [privacy, setPrivacy] = useState(null)
+
+  const goTo = (index) => setActiveTab(index)
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="min-h-screen bg-gray-950 text-gray-100">
+      {/* Header */}
+      <header className="border-b border-gray-800 px-8 py-4 flex items-center gap-3">
+        <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">D</div>
+        <span className="text-lg font-semibold tracking-tight">DataForge AI</span>
+        <span className="ml-2 text-xs text-gray-500 font-medium uppercase tracking-widest">Synthetic Data Generator</span>
+      </header>
 
-      <div className="ticks"></div>
+      {/* Tabs */}
+      <nav className="border-b border-gray-800 px-8 flex gap-1">
+        {TABS.map((tab, i) => (
+          <button
+            key={tab}
+            onClick={() => goTo(i)}
+            className={`px-4 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
+              activeTab === i
+                ? "border-indigo-500 text-indigo-400"
+                : "border-transparent text-gray-500 hover:text-gray-300"
+            }`}
+          >
+            {i + 1}. {tab}
+          </button>
+        ))}
+      </nav>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      {/* Pages */}
+      <main className="px-8 py-8 max-w-5xl mx-auto">
+        {activeTab === 0 && (
+          <UploadPage
+            onSuccess={(data) => { setFileId(data.file_id); setProfile(data); goTo(1) }}
+          />
+        )}
+        {activeTab === 1 && (
+          <GeneratePage
+            fileId={fileId}
+            profile={profile}
+            onSuccess={(data) => { setSyntheticFileId(data.synthetic_file_id); goTo(2) }}
+          />
+        )}
+        {activeTab === 2 && (
+          <QualityPage
+            fileId={fileId}
+            quality={quality}
+            onLoad={setQuality}
+            onNext={() => goTo(3)}
+          />
+        )}
+        {activeTab === 3 && (
+          <PrivacyPage
+            fileId={fileId}
+            privacy={privacy}
+            onLoad={setPrivacy}
+            onNext={() => goTo(4)}
+          />
+        )}
+        {activeTab === 4 && (
+          <ExportPage fileId={fileId} />
+        )}
+      </main>
+    </div>
   )
 }
-
-export default App
