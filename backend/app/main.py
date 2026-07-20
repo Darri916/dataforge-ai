@@ -15,7 +15,9 @@ app = FastAPI(
 # Allows the React frontend (Vercel) to call this backend (Render)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],            # tighten this to your Vercel URL before final deploy
+    allow_origins=[
+    "https://dataforge-ai-gold.vercel.app",
+    "http://localhost:5173",],        
     allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
