@@ -14,3 +14,9 @@ copulas
 rdt
 sdmetrics
 graphviz
+platformdirs
+cloudpickle
+tqdm
+boto3
+botocore
+faker
