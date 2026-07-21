@@ -3,6 +3,16 @@
 Generate realistic synthetic datasets from your real data — with quality scoring, privacy risk analysis, and one-click PDF export.
 
 ---
+## Live Demo
+
+**Frontend:** https://dataforge-ai-gold.vercel.app  
+**Backend API:** https://dataforge-ai-backend-ezxl.onrender.com/docs
+
+> **Note:** The live demo runs on Render's free tier (512MB RAM). Only **Gaussian Copula** is available in the deployed version. CTGAN and TVAE require significantly more memory due to their PyTorch dependency and are available when running locally.
+>
+> The free tier also spins down after inactivity — the first request may take 30–60 seconds to wake up.
+
+---
 
 ## Architecture
 
@@ -123,6 +133,7 @@ VITE_API_URL=http://localhost:8000
 - **CTGAN / TVAE unreliable on very small datasets** — fewer than ~100 rows provides insufficient training signal; generated values may be outside realistic ranges.
 - **No file cleanup** — `uploads/` and `outputs/` grow indefinitely. Add a scheduled cleanup job or use object storage (e.g. S3) for production use.
 - **Generation time scales with data size and synthesizer** — TVAE on 10,000+ rows can take 2–3 minutes. Expect timeouts on Render's free tier for large jobs.
+- **CTGAN and TVAE unavailable on free tier** — both synthesizers depend on PyTorch (~1.5GB RAM on load), which exceeds Render's free tier limit of 512MB. The deployed demo uses Gaussian Copula only. Run locally to access all three synthesizers.
 
 ---
 

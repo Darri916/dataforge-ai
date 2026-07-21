@@ -38,31 +38,43 @@ export default function GeneratePage({ fileId, profile, onSuccess }) {
     <div>
       <h2 className="text-xl font-semibold mb-1">Generate Synthetic Data</h2>
       <p className="text-gray-400 text-sm mb-6">Choose a synthesizer and how many rows to generate. We've pre-selected the best option for your dataset.</p>
-
+      {/* Production notice */}
+<div className="mb-4 px-4 py-3 bg-yellow-950/40 border border-yellow-800 rounded-xl text-sm text-yellow-300">
+  ⚠ This demo runs on a free tier server (512MB RAM). Only <strong>Gaussian Copula</strong> is available here. 
+  Clone the repo and run locally to use CTGAN and TVAE on larger datasets.
+</div>
       {/* Synthesizer selection */}
       <div className="mb-6">
         <label className="text-sm text-gray-400 uppercase tracking-wide font-medium mb-3 block">Synthesizer</label>
         <div className="grid grid-cols-2 gap-3">
-          {SYNTHESIZERS.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => setSynthesizer(s.id)}
-              className={`text-left p-4 rounded-xl border transition-colors ${
-                synthesizer === s.id
-                  ? "border-indigo-500 bg-indigo-950/40"
-                  : "border-gray-700 bg-gray-900 hover:border-gray-500"
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <div className={`w-3 h-3 rounded-full border-2 ${synthesizer === s.id ? "border-indigo-400 bg-indigo-400" : "border-gray-600"}`} />
-                <span className="font-medium text-sm text-white">{s.label}</span>
-                {profile?.recommended_synthesizer === s.id && (
-                  <span className="text-xs bg-indigo-900 text-indigo-300 px-2 py-0.5 rounded-full">Recommended</span>
-                )}
-              </div>
-              <p className="text-xs text-gray-400 ml-5">{s.desc}</p>
-            </button>
-          ))}
+          {SYNTHESIZERS.map((s) => {
+  const disabled = s.id !== "auto" && s.id !== "gaussian_copula"
+  return (
+    <button
+      key={s.id}
+      onClick={() => !disabled && setSynthesizer(s.id)}
+      className={`text-left p-4 rounded-xl border transition-colors ${
+        disabled
+          ? "border-gray-800 bg-gray-900/30 opacity-40 cursor-not-allowed"
+          : synthesizer === s.id
+          ? "border-indigo-500 bg-indigo-950/40"
+          : "border-gray-700 bg-gray-900 hover:border-gray-500"
+      }`}
+    >
+      <div className="flex items-center gap-2 mb-1">
+        <div className={`w-3 h-3 rounded-full border-2 ${!disabled && synthesizer === s.id ? "border-indigo-400 bg-indigo-400" : "border-gray-600"}`} />
+        <span className="font-medium text-sm text-white">{s.label}</span>
+        {profile?.recommended_synthesizer === s.id && !disabled && (
+          <span className="text-xs bg-indigo-900 text-indigo-300 px-2 py-0.5 rounded-full">Recommended</span>
+        )}
+        {disabled && (
+          <span className="text-xs bg-gray-800 text-gray-500 px-2 py-0.5 rounded-full">Requires local setup</span>
+        )}
+      </div>
+      <p className="text-xs text-gray-400 ml-5">{s.desc}</p>
+    </button>
+  )
+})}
         </div>
       </div>
 
