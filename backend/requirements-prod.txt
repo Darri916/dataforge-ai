@@ -13,4 +13,3 @@ matplotlib
 copulas
 rdt
 sdmetrics
-sdv --no-deps
