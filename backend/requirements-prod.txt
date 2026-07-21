@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+python-multipart
+pandas
+numpy
+scipy
+copulas
+rdt
+fpdf2
+scikit-learn
+python-dotenv
+pydantic
+pydantic-settings
+matplotlib
+sdmetrics
